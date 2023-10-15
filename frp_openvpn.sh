@@ -64,14 +64,13 @@ else
 fi
 
 
-while true; do
  
 if [ -f /root/`basename ${FRPURL}` ]; then
     $GREEN "frp文件已存在" $END
 else
      wget $FRPURL
 fi
-done
+
 
 mkdir /apps
 
@@ -584,14 +583,13 @@ fi
 
 
 
-while true; do
  
 if [ -f /root/`basename ${FRPURL}` ]; then
     $GREEN "frp文件已存在" $END
 else
      wget $FRPURL
 fi
-done
+
 
 mkdir /apps
 
