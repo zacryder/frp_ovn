@@ -80,7 +80,7 @@ touch /apps/frps/frps.log
 chmod 666 /apps/frps/frps.log
 
 while true; do  
-    read -p "$GREEN 请输入frps需要监听的端口[1000-65535] $END： " FrpsPort  
+    read -p $GREEN"请输入frps需要监听的端口[1000-65535] ： "$END FrpsPort  
   
     if [[ $FrpsPort -ge 1000 && $FrpsPort -le 65535 ]]; then  
         break  
@@ -284,16 +284,16 @@ if [[ ! -e /etc/openvpn/server/server.conf ]]; then
 		echo "This server is behind NAT. What is the public IPv4 address or hostname?"
 		# Get public IP and sanitize with grep
 		get_public_ip=$(grep -m 1 -oE '^[0-9]{1,3}(\.[0-9]{1,3}){3}$' <<< "$(wget -T 10 -t 1 -4qO- "http://ip1.dynupdate.no-ip.com/" || curl -m 10 -4Ls "http://ip1.dynupdate.no-ip.com/")")
-		read -p "$GREEN请输入在frps所在的公网地址:$END " public_ip
+		read -p $GREEN"请输入在frps所在的公网地址: "$END public_ip
 		# If the checkip service is unavailable and user didn't provide input, ask again
 		until [[ -n "$get_public_ip" || -n "$public_ip" ]]; do
 			echo "Invalid input."
-			read -p "$GREEN请输入在frps所在的公网地址:$END " public_ip
+			read -p $GREEN"请输入在frps所在的公网地址: "$END public_ip
 		done
 		[[ -z "$public_ip" ]] && public_ip="$get_public_ip"
 	fi
 	while true; do  
-    read -p "$GREEN请输入在公网放行的frps监听的端口$END： " FrpsPort  
+    read -p $GREEN"请输入在公网放行的frps监听的端口： "$END FrpsPort  
     if [[ $FrpsPort -ge 1000 && $FrpsPort -le 65535 ]]; then  
         break  
     else  
@@ -322,10 +322,10 @@ if [[ ! -e /etc/openvpn/server/server.conf ]]; then
 	$GREEN "请选择openvpn监听端口的协议，默认UDP?" $END
 	$GREEN "   1) UDP (recommended)" $END
 	$GREEN "   2) TCP" $END
-	read -p "$GREEN Protocol [1]:$END " protocol
+	read -p $GREEN" Protocol [1]: "$END protocol
 	until [[ -z "$protocol" || "$protocol" =~ ^[12]$ ]]; do
 		echo "$protocol: invalid selection."
-		read -p "Protocol [1]: " protocol
+		read -p $GREEN"Protocol [1]: "$END protocol
 	done
 	case "$protocol" in
 		1|"") 
@@ -337,15 +337,15 @@ if [[ ! -e /etc/openvpn/server/server.conf ]]; then
 	esac
 	echo
 	$GREEN "请输入openvpn监听的端口，默认1194?"$END
-	read -p "$GREEN Port [1194]:$END " port
+	read -p $GREEN" Port [1194]: "$END port
 	until [[ -z "$port" || "$port" =~ ^[0-9]+$ && "$port" -le 65535 ]]; do
 		echo "$port: invalid port."
-		read -p "Port [1194]: " port
+		read -p $GREEN"Port [1194]: "$END port
 	done
 	[[ -z "$port" ]] && port="1194"
 	echo
 	$GREEN "请选择一个openvpn客户端的配置文件名称，默认client:" $END
-	read -p "$GREEN Name [client]:$END " unsanitized_client
+	read -p $GREEN" Name [client]: "$END unsanitized_client
 	# Allow a limited set of characters to avoid conflicts
 	client=$(sed 's/[^0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-]/_/g' <<< "$unsanitized_client")
 	[[ -z "$client" ]] && client="client"
