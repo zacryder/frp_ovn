@@ -634,17 +634,16 @@ EOF
 
  systemctl daemon-reload
  systemctl enable --now  frpc
-ss -ntulp |grep ${port}
+ss -ntulp |grep ${port}  >/dev/null 2&1
 
 if  [ $? -eq 0 ];then
-    echo "frpc已经安装成功，请在公网服务器安全组放行协议为${protocol}的${protocol}端口"
+    $GREEN "frpc已经安装成功，请在公网服务器安全组放行协议为${protocol}的${protocol}端口" $END
 else
-    echo "请参考脚本检查frpc文件及服务是否正常启动"
+    $GREEN "请参考脚本检查frpc文件及服务是否正常启动" $GREEN
 fi
 
 }
     Install_frpc	
-	echo "Finished!"
 	echo "openvpn客户端配置文件已经生成在:" ~/"$client.ovpn"
 	echo "使用scp等命令，提取$client.ovpn至openvpn客户端进行测试"
 	
