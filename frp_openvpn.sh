@@ -72,7 +72,14 @@ else
 fi
 
 
-mkdir /apps
+directory="/apps"  
+  
+if [ -d "$directory" ]; then  
+    echo "目录存在: $directory"  
+else  
+    mkdir -p "$directory"  
+    echo "目录已创建: $directory"  
+fi
 
 tar -xzf /root/`basename ${FRPURL}` -C /apps
 
@@ -591,7 +598,14 @@ else
 fi
 
 
-mkdir /apps
+directory="/apps"  
+  
+if [ -d "$directory" ]; then  
+    echo "目录存在: $directory"  
+else  
+    mkdir -p "$directory"  
+    echo "目录已创建: $directory"  
+fi
 
 tar -xzf /root/`basename ${FRPURL}`  -C /apps
 
