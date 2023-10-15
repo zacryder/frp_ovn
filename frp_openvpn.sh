@@ -643,7 +643,7 @@ fi
 }
     Install_frpc	
 	$GREEN "openvpn客户端配置文件已经生成在:" ~/"$client.ovpn" $END
-	$GREEN "使用scp等命令，提取$client.ovpn至openvpn客户端进行测试" $END
+	$GREEN "请使用scp命令，提取$client.ovpn至openvpn客户端进行测试" $END
 	
 else
 	clear
