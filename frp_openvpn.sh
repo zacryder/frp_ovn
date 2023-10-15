@@ -62,16 +62,19 @@ else
      fi
 fi
 
-mkdir /apps
 
+while true; do
+ 
 if [ -f /root/`basename ${FRPURL}` ]; then
     $GREEN "frp文件已存在" $END
-        tar -xzf /root/`basename ${FRPURL}`  -C /apps
 else
      wget $FRPURL
-         tar -xzf /root/`basename ${FRPURL}` -C /apps
 fi
+done
 
+mkdir /apps
+
+tar -xzf /root/`basename ${FRPURL}` -C /apps
 
 mv /apps/${DIRNAME} /apps/frps
 
@@ -79,7 +82,6 @@ touch /apps/frps/frps.log
 
 chmod 666 /apps/frps/frps.log
 
-while true; do  
     read -p "请输入frps需要监听的端口[1000-65535]: " FrpsPort  
   
     if [[ $FrpsPort -ge 1000 && $FrpsPort -le 65535 ]]; then  
@@ -87,7 +89,6 @@ while true; do
     else  
         $GREEN "输入的端口号不在范围内，请重新输入。" $END
     fi  
-done
 
 cat  >/apps/frps/frps.ini <<EOF
 [common]
@@ -576,17 +577,21 @@ else
      fi
 fi
 
-mkdir /apps
 
-sleep 1
 
+
+while true; do
+ 
 if [ -f /root/`basename ${FRPURL}` ]; then
     $GREEN "frp文件已存在" $END
-        tar -xzf /root/`basename ${FRPURL}`  -C /apps
 else
      wget $FRPURL
-         tar -xzf /root/`basename ${FRPURL}` -C /apps
 fi
+done
+
+mkdir /apps
+
+tar -xzf /root/`basename ${FRPURL}`  -C /apps
 
 mv /apps/${DIRNAME} /apps/frpc
 
