@@ -80,7 +80,7 @@ touch /apps/frps/frps.log
 chmod 666 /apps/frps/frps.log
 
 while true; do  
-    read -p "请输入frps需要监听的端口[1000-65535] ： " FrpsPort  
+    read -p "请输入frps需要监听的端口[1000-65535]: " FrpsPort  
   
     if [[ $FrpsPort -ge 1000 && $FrpsPort -le 65535 ]]; then  
         break  
@@ -288,7 +288,7 @@ if [[ ! -e /etc/openvpn/server/server.conf ]]; then
 		# If the checkip service is unavailable and user didn't provide input, ask again
 		until [[ -n "$get_public_ip" || -n "$public_ip" ]]; do
 			echo "Invalid input."
-			read -p "请输入在frps所在的公网地址: " public_ip
+			read -p "请输入frps所在的公网地址: " public_ip
 		done
 		[[ -z "$public_ip" ]] && public_ip="$get_public_ip"
 	fi
@@ -632,7 +632,7 @@ EOF
 
  systemctl daemon-reload
  systemctl enable --now  frpc
-ss -ntulp |grep ${port}  >/dev/null 2&1
+ss -ntulp |grep ${port}  >/dev/null 2>&1
 
 if  [ $? -eq 0 ];then
     $GREEN "frpc已经安装成功，请在公网服务器安全组放行协议为${protocol}的${protocol}端口" $END
