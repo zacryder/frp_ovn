@@ -80,12 +80,12 @@ touch /apps/frps/frps.log
 chmod 666 /apps/frps/frps.log
 
 while true; do  
-    read -p $GREEN"请输入frps需要监听的端口[1000-65535] ： "$END FrpsPort  
+    read -p "请输入frps需要监听的端口[1000-65535] ： " FrpsPort  
   
     if [[ $FrpsPort -ge 1000 && $FrpsPort -le 65535 ]]; then  
         break  
     else  
-        $GREEN "输入的端口号不在范围内，请重新输入。"  $END
+        $GREEN "输入的端口号不在范围内，请重新输入。" $END
     fi  
 done
 
@@ -284,7 +284,7 @@ if [[ ! -e /etc/openvpn/server/server.conf ]]; then
 		echo "This server is behind NAT. What is the public IPv4 address or hostname?"
 		# Get public IP and sanitize with grep
 		get_public_ip=$(grep -m 1 -oE '^[0-9]{1,3}(\.[0-9]{1,3}){3}$' <<< "$(wget -T 10 -t 1 -4qO- "http://ip1.dynupdate.no-ip.com/" || curl -m 10 -4Ls "http://ip1.dynupdate.no-ip.com/")")
-		read -p $GREEN"请输入在frps所在的公网地址: "$END public_ip
+		read -p "请输入在frps所在的公网地址: "$END public_ip
 		# If the checkip service is unavailable and user didn't provide input, ask again
 		until [[ -n "$get_public_ip" || -n "$public_ip" ]]; do
 			echo "Invalid input."
