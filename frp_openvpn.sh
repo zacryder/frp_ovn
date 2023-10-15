@@ -42,30 +42,30 @@ fi
 if [[ "$OS" == "Ubuntu" ]];then
       systemctl disable --now ufw
      if  command -v wget tar >/dev/null 2>&1; then
-       echo "wget tar已经安装"
+       $GREEN "wget tar已经安装" $END
      else
-       echo "wget tar 未安装，正在安装..."
+       $GREEN "wget tar 未安装，正在安装..." $END
         apt-get update
         apt-get install wget tar
-       echo "wget tar 安装完成"
+       $GREEN "wget tar 安装完成" $END
      fi
 else 	
       systemctl disable --now firewalld
 	  sed -i '/^SELINUX/s/=.*/=disabled/' /etc/selinux/config
       setenforce 0
      if  command -v wget tar>/dev/null 2>&1; then
-       echo "wget tar 已经安装"
+       $GREEN "wget tar 已经安装" $END
      else
-       echo "wget tar未安装，正在安装..."
+       $GREEN "wget tar未安装，正在安装..." $END
         yum install -y wget tar
-       echo "wget安装完成"
+       $GREEN "wget安装完成" $END
      fi
 fi
 
 mkdir /apps
 
 if [ -f /root/`basename ${FRPURL}` ]; then
-    echo "frp文件已存在"
+    $GREEN "frp文件已存在" $END
         tar -xzf /root/`basename ${FRPURL}`  -C /apps
 else
      wget $FRPURL
@@ -80,13 +80,12 @@ touch /apps/frps/frps.log
 chmod 666 /apps/frps/frps.log
 
 while true; do  
-    read -p "请输入frps需要监听的端口[1000-65535]： " FrpsPort  
+    read -p " $END 请输入frps需要监听的端口[1000-65535] $END： " FrpsPort  
   
     if [[ $FrpsPort -ge 1000 && $FrpsPort -le 65535 ]]; then  
-        echo "输入的端口号在范围内。"  rm 
         break  
     else  
-        echo "输入的端口号不在范围内，请重新输入。"  
+        $GREEN "输入的端口号不在范围内，请重新输入。"  $END
     fi  
 done
 
@@ -124,7 +123,7 @@ systemctl enable --now  frps
 ss -ntlp |grep ${FrpsPort}
 
 
-echo "frps已经安装成功，请在服务器安全组放行协议为TCP的${FrpsPort}端口,然后在内网服务器重新执行脚本进行安装openvpn+frpc"
+$GREEN "frps已经安装成功，请在服务器安全组放行协议为TCP的${FrpsPort}端口,然后在内网服务器重新执行脚本进行安装openvpn+frpc" $END
 
 exit
 }
@@ -285,21 +284,20 @@ if [[ ! -e /etc/openvpn/server/server.conf ]]; then
 		echo "This server is behind NAT. What is the public IPv4 address or hostname?"
 		# Get public IP and sanitize with grep
 		get_public_ip=$(grep -m 1 -oE '^[0-9]{1,3}(\.[0-9]{1,3}){3}$' <<< "$(wget -T 10 -t 1 -4qO- "http://ip1.dynupdate.no-ip.com/" || curl -m 10 -4Ls "http://ip1.dynupdate.no-ip.com/")")
-		read -p "请输入在frps所在的公网地址: " public_ip
+		read -p "$GREEN请输入在frps所在的公网地址:$END " public_ip
 		# If the checkip service is unavailable and user didn't provide input, ask again
 		until [[ -n "$get_public_ip" || -n "$public_ip" ]]; do
 			echo "Invalid input."
-			read -p "请输入在frps所在的公网地址: " public_ip
+			read -p "$GREEN请输入在frps所在的公网地址:$END " public_ip
 		done
 		[[ -z "$public_ip" ]] && public_ip="$get_public_ip"
 	fi
 	while true; do  
-    read -p "请输入在公网放行的frps监听的端口： " FrpsPort  
+    read -p "$GREEN请输入在公网放行的frps监听的端口$END： " FrpsPort  
     if [[ $FrpsPort -ge 1000 && $FrpsPort -le 65535 ]]; then  
-        echo "输入的端口号在范围内。"  
         break  
     else  
-        echo "输入的端口号不在范围内，请重新输入。"  
+        $GREEN "输入的端口号不在范围内，请重新输入。"$END 
     fi  
     done
 	# If system has a single IPv6, it is selected automatically
@@ -321,10 +319,10 @@ if [[ ! -e /etc/openvpn/server/server.conf ]]; then
 		ip6=$(ip -6 addr | grep 'inet6 [23]' | cut -d '/' -f 1 | grep -oE '([0-9a-fA-F]{0,4}:){1,7}[0-9a-fA-F]{0,4}' | sed -n "$ip6_number"p)
 	fi
 	echo
-	echo "请选择openvpn监听端口的协议，默认UDP?"
-	echo "   1) UDP (recommended)"
-	echo "   2) TCP"
-	read -p "Protocol [1]: " protocol
+	$GREEN "请选择openvpn监听端口的协议，默认UDP?" $END
+	$GREEN "   1) UDP (recommended)" $END
+	$GREEN "   2) TCP" $END
+	read -p "$GREEN Protocol [1]:$END " protocol
 	until [[ -z "$protocol" || "$protocol" =~ ^[12]$ ]]; do
 		echo "$protocol: invalid selection."
 		read -p "Protocol [1]: " protocol
@@ -338,16 +336,16 @@ if [[ ! -e /etc/openvpn/server/server.conf ]]; then
 		;;
 	esac
 	echo
-	echo "请输入openvpn监听的端口，默认1194?"
-	read -p "Port [1194]: " port
+	$GREEN "请输入openvpn监听的端口，默认1194?"$END
+	read -p "$GREEN Port [1194]:$END " port
 	until [[ -z "$port" || "$port" =~ ^[0-9]+$ && "$port" -le 65535 ]]; do
 		echo "$port: invalid port."
 		read -p "Port [1194]: " port
 	done
 	[[ -z "$port" ]] && port="1194"
 	echo
-	echo "请选择一个openvpn客户端的配置文件名称，默认client:"
-	read -p "Name [client]: " unsanitized_client
+	$GREEN "请选择一个openvpn客户端的配置文件名称，默认client:" $END
+	read -p "$GREEN Name [client]:$END " unsanitized_client
 	# Allow a limited set of characters to avoid conflicts
 	client=$(sed 's/[^0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-]/_/g' <<< "$unsanitized_client")
 	[[ -z "$client" ]] && client="client"
@@ -558,23 +556,23 @@ fi
 if [[ "$os" == "ubuntu" ]];then
       systemctl disable --now ufw
      if  command -v wget tar>/dev/null 2>&1; then
-       echo "wget tar 已经安装"
+       $GREEN "wget tar 已经安装" $END
      else
-       echo "wget tar未安装，正在安装..."
+       $GREEN "wget tar未安装，正在安装..." $END
        apt-get update >/dev/null 2>&1
        apt-get install wget tar >/dev/null 2>&1
-       echo "wget tar 安装完成"
+       $GREEN "wget tar 安装完成" $END
      fi
 else
       systemctl disable --now firewalld
 	  sed -i '/^SELINUX/s/=.*/=disabled/' /etc/selinux/config
       setenforce 0
      if command -v wget tar>/dev/null 2>&1; then
-       echo "wget tar 已经安装"
+       $GREEN "wget tar 已经安装" $END
      else
-       echo "wget tar 未安装，正在安装..."
+       $GREEN "wget tar 未安装，正在安装..." $END
        yum install -y wget tar >/dev/null 2>&1
-       echo "wget tar 安装完成"
+       $GREEN "wget tar 安装完成" $END
      fi
 fi
 
@@ -583,7 +581,7 @@ mkdir /apps
 sleep 1
 
 if [ -f /root/`basename ${FRPURL}` ]; then
-    echo "frp文件已存在"
+    $GREEN "frp文件已存在" $END
         tar -xzf /root/`basename ${FRPURL}`  -C /apps
 else
      wget $FRPURL
@@ -639,13 +637,13 @@ ss -ntulp |grep ${port}  >/dev/null 2&1
 if  [ $? -eq 0 ];then
     $GREEN "frpc已经安装成功，请在公网服务器安全组放行协议为${protocol}的${protocol}端口" $END
 else
-    $GREEN "请参考脚本检查frpc文件及服务是否正常启动" $GREEN
+    $GREEN "请参考脚本检查frpc文件及服务是否正常启动" $END
 fi
 
 }
     Install_frpc	
-	echo "openvpn客户端配置文件已经生成在:" ~/"$client.ovpn"
-	echo "使用scp等命令，提取$client.ovpn至openvpn客户端进行测试"
+	$GREEN "openvpn客户端配置文件已经生成在:" ~/"$client.ovpn" $END
+	$GREEN "使用scp等命令，提取$client.ovpn至openvpn客户端进行测试" $END
 	
 else
 	clear
