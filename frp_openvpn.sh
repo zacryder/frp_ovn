@@ -208,9 +208,9 @@ TUN needs to be enabled before running this installer."
 fi
 
 if [[ "$os" == "ubuntu" ]]; then
- cp -a /etc/apt/sources.list /etc/apt/sources.list.bak
- sed -i "s@http://.*archive.ubuntu.com@http://mirrors.huaweicloud.com@g" /etc/apt/sources.list
- sed -i "s@http://.*security.ubuntu.com@http://mirrors.huaweicloud.com@g" /etc/apt/sources.list
+ cp -a /etc/apt/sources.list /etc/apt/sources.list.backup
+ sed -i "s@http://.*archive.ubuntu.com@http://mirrors.bclinux.org@g" /etc/apt/sources.list
+ sed -i "s@http://.*security.ubuntu.com@http://mirrors.bclinux.org@g" /etc/apt/sources.list
  apt update
 fi  
 
@@ -233,6 +233,8 @@ cdr2mask(){
 }
 IPNET=`get_ipgate $IPADDRESS`
 MASK=`cdr2mask $IPMASK`
+
+
 
 new_client(){
 	# Generates the custom client.ovpn
