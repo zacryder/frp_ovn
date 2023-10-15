@@ -80,7 +80,7 @@ touch /apps/frps/frps.log
 chmod 666 /apps/frps/frps.log
 
 while true; do  
-    read -p " $END 请输入frps需要监听的端口[1000-65535] $END： " FrpsPort  
+    read -p " $GREEN 请输入frps需要监听的端口[1000-65535] $END： " FrpsPort  
   
     if [[ $FrpsPort -ge 1000 && $FrpsPort -le 65535 ]]; then  
         break  
