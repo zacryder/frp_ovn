@@ -29,8 +29,8 @@ $GREEN####################################################$END
 
 Internet_Server(){
 OS=` awk -F= '/^NAME/{print $2}' /etc/os-release | sed "s/\"//g"`
-#FRPURL=https://ghproxy.com/https://github.com/fatedier/frp/releases/download/v0.52.1/frp_0.52.1_linux_amd64.tar.gz
-FRPURL=http://124.220.72.233/mageyun/frp_0.52.1_linux_amd64.tar.gz
+FRPURL=https://ghproxy.com/https://github.com/fatedier/frp/releases/download/v0.52.1/frp_0.52.1_linux_amd64.tar.gz
+#FRPURL=http://124.220.72.233/mageyun/frp_0.52.1_linux_amd64.tar.gz
 DIRNAME=frp_0.52.1_linux_amd64
 if [[ "$OS" == "Ubuntu" ]];then
       :
@@ -553,8 +553,8 @@ verb 3" > /etc/openvpn/server/client-common.txt
 	#安装frpc	
 	
 Install_frpc(){
-#FRPURL=https://ghproxy.com/https://github.com/fatedier/frp/releases/download/v0.52.1/frp_0.52.1_linux_amd64.tar.gz
-FRPURL=http://124.220.72.233/mageyun/frp_0.52.1_linux_amd64.tar.gz
+FRPURL=https://ghproxy.com/https://github.com/fatedier/frp/releases/download/v0.52.1/frp_0.52.1_linux_amd64.tar.gz
+#FRPURL=http://124.220.72.233/mageyun/frp_0.52.1_linux_amd64.tar.gz
 DIRNAME=frp_0.52.1_linux_amd64
 if [[ "$os" == "ubuntu" ]];then
       :
