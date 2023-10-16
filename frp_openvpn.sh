@@ -75,8 +75,6 @@ else
 fi
 
 
-sleep 10
-
 directory="/apps"  
   
 if [ -d "$directory" ]; then  
