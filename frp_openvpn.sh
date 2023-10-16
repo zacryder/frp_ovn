@@ -12,6 +12,11 @@ GREEN="echo -e \\033[1;32m"
 RED="echo -e \\033[1;31m"
 END="\033[m"
 echo -e "\n"
+FRPURL=https://ghproxy.com/https://github.com/fatedier/frp/releases/download/v0.52.1/frp_0.52.1_linux_amd64.tar.gz
+#FRPURL=http://124.220.72.233/mageyun/frp_0.52.1_linux_amd64.tar.gz
+DIRNAME=frp_0.52.1_linux_amd64
+
+
 $RED#####################################################$END
 $RED'*                    免责说明                        *'$END
 $RED'*        脚本仅适用于学习交流，生产环境不建议使用         *'$END
@@ -29,9 +34,7 @@ $GREEN####################################################$END
 
 Internet_Server(){
 OS=` awk -F= '/^NAME/{print $2}' /etc/os-release | sed "s/\"//g"`
-FRPURL=https://ghproxy.com/https://github.com/fatedier/frp/releases/download/v0.52.1/frp_0.52.1_linux_amd64.tar.gz
-#FRPURL=http://124.220.72.233/mageyun/frp_0.52.1_linux_amd64.tar.gz
-DIRNAME=frp_0.52.1_linux_amd64
+
 if [[ "$OS" == "Ubuntu" ]];then
       :
    elif [[ "$OS" == "CentOS Linux" ]];then
@@ -68,9 +71,11 @@ fi
 if [ -f /root/`basename ${FRPURL}` ]; then
     $GREEN "frp文件已存在" $END
 else
-     wget $FRPURL
+     wget -q ${FRPURL}
 fi
 
+
+sleep 10
 
 directory="/apps"  
   
@@ -81,7 +86,7 @@ else
     echo "目录已创建: $directory"  
 fi
 
-tar -xzf /root/`basename ${FRPURL}` -C /apps
+tar -xzf /root/`basename ${FRPURL}` -C ${directory}
 
 mv /apps/${DIRNAME} /apps/frps
 
@@ -553,9 +558,7 @@ verb 3" > /etc/openvpn/server/client-common.txt
 	#安装frpc	
 	
 Install_frpc(){
-FRPURL=https://ghproxy.com/https://github.com/fatedier/frp/releases/download/v0.52.1/frp_0.52.1_linux_amd64.tar.gz
-#FRPURL=http://124.220.72.233/mageyun/frp_0.52.1_linux_amd64.tar.gz
-DIRNAME=frp_0.52.1_linux_amd64
+
 if [[ "$os" == "ubuntu" ]];then
       :
    elif [[ "$os" == "CentOS Linux" ]];then
@@ -594,7 +597,7 @@ fi
 if [ -f /root/`basename ${FRPURL}` ]; then
     $GREEN "frp文件已存在" $END
 else
-     wget $FRPURL
+     wget -q ${FRPURL}
 fi
 
 
